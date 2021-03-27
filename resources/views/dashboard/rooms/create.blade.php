@@ -25,9 +25,9 @@
                 <div class="form-group">
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <span class="input-group-text"> <i class="fa fa-at"></i> </span>
+                            <span class="input-group-text"> <i class="fa fa-edit"></i> </span>
                         </div>
-                        <input type="text" name='name' class="form-control" placeholder="name :" value="{{ old('name') ?? '' }}">
+                        <input type="text" name='name' class="form-control" placeholder="Room Name" value="{{ old('name') ?? '' }}">
                     </div>
                     @error('name') <span class="red"> {{ $message }} </span> @enderror
                 </div>
@@ -38,9 +38,9 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text"> <i class="fa fa-user"></i> </span>
+                                    <span class="input-group-text"> <i class="fa fa-hotel"></i> </span>
                                 </div>
-                                <input type="number" name='number' class="form-control" placeholder="Number Or Room" value="{{ old('number') }}">
+                                <input type="number" name='number' class="form-control" placeholder="Room No." value="{{ old('number') }}">
                             </div>
                             @error('number') <span class="red"> {{ $message }} </span> @enderror
                         </div>
@@ -51,9 +51,9 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text"> <i class="fa fa-eye toggle-password"></i> </span>
+                                    <span class="input-group-text"> <i class="fa fa-users toggle-password"></i> </span>
                                 </div>
-                                <input type="number" name='size' class="form-control" placeholder="size of Room : " value="{{ old('size') }}">
+                                <input type="number" name='size' class="form-control" placeholder="Room size" value="{{ old('size') }}">
                             </div>
                             @error('size') <span class="red"> {{ $message }} </span> @enderror
                         </div>
@@ -64,9 +64,9 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text"> <i class="fa fa-user"></i> </span>
+                                    <span class="input-group-text"> <i class="far fa-money-bill-alt"></i> </span>
                                 </div>
-                                <input type="text" name="price" class="form-control" placeholder="Price of Room 00.00$:" value="{{ old('price') ?? '' }}">
+                                <input type="text" name="price" class="form-control" placeholder="Price 00.00$ " value="{{ old('price') ?? '' }}">
                             </div>
                             @error('price') <span class="red"> {{ $message }} </span> @enderror
                         </div>
@@ -77,7 +77,7 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text"> <i class="fa fa-mobile-alt"></i> </span>
+                                    <span class="input-group-text"> <i class="fa fa-hotel"></i> </span>
                                 </div>
                                 <select class="form-control" name="floor_id">
                                     <optgroup label="Select The Floor Or Room">
