@@ -1,0 +1,1 @@
+{{ App\Models\Admin::findOrFail($admin_id)->name }}
