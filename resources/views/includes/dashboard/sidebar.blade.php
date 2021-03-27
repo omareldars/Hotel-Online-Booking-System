@@ -48,6 +48,11 @@
                         <i class="nav-icon fas fa-th"></i> <p> Rooms </p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ route('dashboard.receptionists.index') }}" class="nav-link">
+                        <i class="nav-icon fas fa-th"></i> <p> Create Recetionst </p>
+                    </a>
+                </li>
 
             </ul>
         </nav>

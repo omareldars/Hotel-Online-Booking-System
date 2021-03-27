@@ -21,18 +21,22 @@ class ReceptionistsDataTable extends DataTable
     {
         return datatables()
             ->eloquent($query)
+            ->addColumn('banned', '')
+            ->addColumn('created_by', 'dashboard.receptionists.created_by')
             ->addColumn('action', 'dashboard.receptionists.action');
     }
 
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\User $model
+     * @param \App\Models\Admin $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function query(Admin $model)
     {
-        return $model->newQuery();
+        return $model->query()->where('id', '<>', auth()->user()->id)->whereDoesntHaveRole()
+            ->orWhereRoleIs(['receptionist'])->latest();
+
     }
 
     /**
@@ -65,18 +69,17 @@ class ReceptionistsDataTable extends DataTable
     protected function getColumns()
     {
         return [
-
             Column::make('id'),
             Column::make('name'),
             Column::make('email'),
+            Column::make('created_by'),
             Column::make('phone'),
             Column::make('national_id'),
-            Column::make('image'),
-            Column::make('created_at'),
+            // Column::make('created_at'),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
-                ->width(60)
+                ->width(200)
                 ->addClass('text-center'),
         ];
     }

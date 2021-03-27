@@ -35,7 +35,8 @@ class AdminsDataTable extends DataTable
     public function query(Admin $model)
     {
         return $model->query()->where('id', '<>', auth()->user()->id)->whereDoesntHaveRole()
-        ->orWhereRoleIs(['manager', 'receptionist'])->latest();
+        ->orWhereRoleIs(['manager'])->latest();
+
     }
 
     /**
