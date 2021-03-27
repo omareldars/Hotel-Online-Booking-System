@@ -21,9 +21,19 @@ Route::middleware(['auth:admin'])->prefix('dashboard')->as('dashboard.')->group(
 
     Route::get('/', 'DashboardController@index')->name('home');
 
-    Route::resource('admins', 'AdminsController')->middleware('role:admin|manager');
-    Route::get('admins/{admin}/banned', 'AdminsController@banned')->name('admins.banned');
-    Route::get('admins/{admin}/unbanned', 'AdminsController@unbanned')->name('admins.unbanned');
+    Route::middleware(['role:admin'])->group(function () {
+        Route::resource('managers', 'ManagersController');
+        Route::get('managers/{admin}/banned', 'ManagersController@banned')->name('managers.banned');
+        Route::get('managers/{admin}/unbanned', 'ManagersController@unbanned')->name('managers.unbanned');
+    });
+
+
+    Route::middleware(['role:admin|manager'])->group(function () {
+        Route::resource('receptionists', 'ReceptionistsController');
+        Route::get('receptionists/{admin}/banned', 'ReceptionistsController@banned')->name('receptionists.banned');
+        Route::get('receptionists/{admin}/unbanned', 'ReceptionistsController@unbanned')->name('receptionists.unbanned');
+    });
+
 
     Route::resource('users', 'UsersController');
     Route::get('users/{id}/approve', 'UsersController@approve')->name('users.approve');
@@ -37,5 +47,4 @@ Route::middleware(['auth:admin'])->prefix('dashboard')->as('dashboard.')->group(
 
 });
 
-// Route::view('/ban', 'ban')->name('ban')->middleware();
-
+Route::view('/ban', 'ban')->name('ban')->middleware();

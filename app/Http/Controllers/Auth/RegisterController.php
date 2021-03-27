@@ -70,7 +70,7 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         $image_name = null;
-        if ($data['image']) {
+        if (isset($data['image'])) {
             Image::make($data['image'])
                 ->resize(300, null, function ($constraint) {
                     $constraint->aspectRatio();

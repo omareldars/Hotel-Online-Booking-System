@@ -2,23 +2,28 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use App\DataTables\ReceptionistsDataTable;
+use App\DataTables\AdminsDataTable;
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
 
-class ReceptionistsController extends Controller
+class ManagersController extends Controller
 {
-    public function index(ReceptionistsDataTable $dataTable)
+    public function __construct()
     {
-        $count = Admin::whereDoesntHaveRole()->orWhereRoleIs(['receptionist'])->latest()->count();
-        return $dataTable->render('dashboard.receptionists.index', compact('count'));
+        $this->middleware('role:admin');
+    }
+
+    public function index(AdminsDataTable $dataTable)
+    {
+        $count = Admin::whereDoesntHaveRole()->orWhereRoleIs(['manager'])->latest()->count();
+        return $dataTable->render('dashboard.managers.index', compact('count'));
     }
 
     public function create()
     {
-        return view('dashboard.receptionists.create');
+        return view('dashboard.managers.create');
     }
 
     public function store(Request $request)
@@ -30,10 +35,11 @@ class ReceptionistsController extends Controller
             'email'                  => 'required|email|unique:admins,email',
             'password'               => 'required|min:3|max:25|confirmed',
             'password_confirmation'  => 'same:password',
+            'role'                   => 'in:receptionist,manager',
             'image'                  => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:8080',
         ]); // This For Validation The Inputs
 
-        $request_data = $request->except(['password', 'password_confirmation', 'image']);
+        $request_data = $request->except(['password', 'password_confirmation', 'permissions', 'image', 'role']);
         $request_data['password'] = bcrypt($request->password);
         $request_data['created_by'] = auth()->user()->id;
 
@@ -48,19 +54,19 @@ class ReceptionistsController extends Controller
         } // Upload Images To Uploads Folder
 
         $admin = Admin::create($request_data);
-        $admin->attachRole('receptionist');
-        session()->flash('success', 'Receptionist Successfuly Created');
-        return redirect()->route('dashboard.receptionists.index');
+        $admin->attachRole('manager');
+        session()->flash('success', 'Manager Successfuly Created');
+        return redirect()->route('dashboard.managers.index');
     }
 
     public function show(Admin $admin)
     {
-        return view('dashboard.receptionists.show', compact('admin'));
+        return view('dashboard.managers.show', compact('admin'));
     }
 
     public function edit(Admin $admin)
     {
-        return view('dashboard.receptionists.edit', compact('admin'));
+        return view('dashboard.managers.edit', compact('admin'));
     }
 
     public function update(Request $request, Admin $admin)
@@ -72,6 +78,7 @@ class ReceptionistsController extends Controller
             'email'                  => 'required|email|unique:admins,email,' . $admin->id,
             'password'               => 'nullable|min:3|max:25|confirmed',
             'password_confirmation'  => 'nullable|same:password',
+            'role'                   => 'in:receptionist,manager',
             'image'                  => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:8080',
         ]); // This For Validation The Inputs
 
@@ -95,8 +102,8 @@ class ReceptionistsController extends Controller
         } // Upload Images To Uploads Folder
 
         $admin->update($request_data);
-        session()->flash('success', 'Receptionist Successfuly Updated');
-        return redirect()->route('dashboard.receptionists.index');
+        session()->flash('success', 'Manger Successfuly Updated');
+        return redirect()->route('dashboard.managers.index');
     }
 
     public function destroy(Admin $admin)
@@ -107,23 +114,23 @@ class ReceptionistsController extends Controller
             }
         }
 
-        session()->flash('success', 'Receptionist Successfuly Deleted');
-        return redirect()->route('dashboard.receptionists.index');
+        session()->flash('success', 'Manger Successfuly Deleted');
+        return redirect()->route('dashboard.managers.index');
     }
 
     public function banned(Admin $admin)
     {
         $admin->update(['banned' => 1,]);
 
-        session()->flash('success', 'Receptionist Successfuly Bannded');
-        return redirect()->route('dashboard.receptionists.index');
+        session()->flash('success', 'Manger Successfuly Bannded');
+        return redirect()->route('dashboard.managers.index');
     }
 
     public function unbanned(Admin $admin)
     {
         $admin->update(['banned' => 0]);
 
-        session()->flash('success', 'Receptionist Successfuly Unbannded');
-        return redirect()->route('dashboard.receptionists.index');
+        session()->flash('success', 'Manger Successfuly Unbannded');
+        return redirect()->route('dashboard.managers.index');
     }
 }

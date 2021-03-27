@@ -34,9 +34,7 @@ class ReceptionistsDataTable extends DataTable
      */
     public function query(Admin $model)
     {
-        return $model->query()->where('id', '<>', auth()->user()->id)->whereDoesntHaveRole()
-            ->orWhereRoleIs(['receptionist'])->latest();
-
+        return $model->newQuery()->whereRoleIs(['receptionist'])->latest();
     }
 
     /**
@@ -69,13 +67,12 @@ class ReceptionistsDataTable extends DataTable
     protected function getColumns()
     {
         return [
+
             Column::make('id'),
             Column::make('name'),
             Column::make('email'),
-            Column::make('created_by'),
             Column::make('phone'),
             Column::make('national_id'),
-            // Column::make('created_at'),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)

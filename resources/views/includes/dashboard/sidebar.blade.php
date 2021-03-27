@@ -1,7 +1,7 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="" class="brand-link">
-{{--       // الصفحه الرئيسيه--}}
+        {{--       // الصفحه الرئيسيه--}}
     </a>
 
     <!-- Sidebar -->
@@ -12,24 +12,27 @@
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
-                <li class="nav-item has-treeview menu-open">
-                    <a href="#" class="nav-link active">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
-                        <p>
-                            Create  Manger
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
+                <li class="nav-item">
+                    <a href="{{ route('dashboard.home') }}" class="nav-link">
+                        <i class="nav-icon fas fa-th"></i> <p>Dashboard</p>
                     </a>
-                    <ul class="nav nav-treeview">
-                        @if (auth()->user()->hasRole(['admin', 'manager']))
-                            <li class="nav-item">
-                                <a href="{{ route('dashboard.admins.index') }}" class="nav-link">
-                                    <i class="nav-icon fas fa-th"></i> <p>Create  Manger</p>
-                                </a>
-                            </li>
-                        @endif
-                    </ul>
                 </li>
+
+                @if (auth()->user()->hasRole('admin'))
+                    <li class="nav-item">
+                        <a href="{{ route('dashboard.managers.index') }}" class="nav-link">
+                            <i class="nav-icon fas fa-th"></i> <p>Manger</p>
+                        </a>
+                    </li>
+                @endif
+
+                @if (auth()->user()->hasRole(['admin', 'manager']))
+                    <li class="nav-item">
+                        <a href="{{ route('dashboard.receptionists.index') }}" class="nav-link">
+                            <i class="nav-icon fas fa-th"></i> <p>Receptionists</p>
+                        </a>
+                    </li>
+                @endif
 
                 <li class="nav-item">
                     <a href="{{ route('dashboard.users.index') }}" class="nav-link">
@@ -46,11 +49,6 @@
                 <li class="nav-item">
                     <a href="{{ route('dashboard.rooms.index') }}" class="nav-link">
                         <i class="nav-icon fas fa-th"></i> <p> Rooms </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('dashboard.receptionists.index') }}" class="nav-link">
-                        <i class="nav-icon fas fa-th"></i> <p> Create Recetionst </p>
                     </a>
                 </li>
 

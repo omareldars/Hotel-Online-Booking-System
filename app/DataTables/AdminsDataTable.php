@@ -22,8 +22,7 @@ class AdminsDataTable extends DataTable
         return datatables()
             ->eloquent($query)
             ->addColumn('banned', '')
-            ->addColumn('created_by', 'dashboard.admins.created_by')
-            ->addColumn('action', 'dashboard.admins.action');
+            ->addColumn('action', 'dashboard.managers.action');
     }
 
     /**
@@ -34,9 +33,7 @@ class AdminsDataTable extends DataTable
      */
     public function query(Admin $model)
     {
-        return $model->query()->where('id', '<>', auth()->user()->id)->whereDoesntHaveRole()
-        ->orWhereRoleIs(['manager'])->latest();
-
+        return $model->query()->whereRoleIs(['manager'])->latest();
     }
 
     /**
@@ -47,18 +44,18 @@ class AdminsDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-                    ->setTableId('admins-table')
-                    ->columns($this->getColumns())
-                    ->minifiedAjax()
-                    ->dom('Bfrtip')
-                    ->orderBy(1)
-                    ->buttons(
-                        Button::make('create'),
-                        Button::make('export'),
-                        Button::make('print'),
-                        Button::make('reset'),
-                        Button::make('reload')
-                    );
+            ->setTableId('admins-table')
+            ->columns($this->getColumns())
+            ->minifiedAjax()
+            ->dom('Bfrtip')
+            ->orderBy(1)
+            ->buttons(
+                Button::make('create'),
+                Button::make('export'),
+                Button::make('print'),
+                Button::make('reset'),
+                Button::make('reload')
+            );
     }
 
     /**
@@ -72,15 +69,14 @@ class AdminsDataTable extends DataTable
             Column::make('id'),
             Column::make('name'),
             Column::make('email'),
-            Column::make('created_by'),
             Column::make('phone'),
             Column::make('national_id'),
-            // Column::make('created_at'),
+            Column::make('created_at'),
             Column::computed('action')
-                    ->exportable(false)
-                    ->printable(false)
-                    ->width(200)
-                    ->addClass('text-center'),
+                ->exportable(false)
+                ->printable(false)
+                ->width(200)
+                ->addClass('text-center'),
         ];
     }
 
